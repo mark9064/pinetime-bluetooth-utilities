@@ -41,7 +41,6 @@ async def main() -> None:
     firmware_size = len(firmware_bin)
     print("Searching")
     device = await bleak.BleakScanner.find_device_by_name(DEVICE_NAME)
-    print(device)
     if device is None:
         print("No device?")
         return
