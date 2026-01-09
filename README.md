@@ -12,6 +12,8 @@ You probably want to install the dependencies in a virtual environment (venv). I
 
 ## DFU (device firmware update)
 
+On Linux with a Realtek Bluetooth chipset DFU will be slow due to a kernel bug. Other chipset manufacturers and operating systems should not be affected.
+
 `python dfu.py </path/to/pinetime-mcuboot-app-dfu.zip>`
 
 ## Filesystem resources
