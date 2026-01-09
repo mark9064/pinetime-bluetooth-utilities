@@ -42,7 +42,7 @@ async def main() -> None:
     print("Searching")
     device = await bleak.BleakScanner.find_device_by_name(DEVICE_NAME)
     if device is None:
-        print("No device?")
+        print("Can't find an InfiniTime device. Disconnect the watch from any device")
         return
     client = bleak.BleakClient(device)
     print("Connecting")
@@ -66,8 +66,14 @@ async def main() -> None:
     await client.write_gatt_char(
         PACKET, bytes(8) + firmware_size.to_bytes(4, "little"), response=False
     )
-    if (await receive_stream.receive()) != bytes([0x10, 0x01, 0x01]):
-        raise RuntimeError("DFU start failed")
+    try:
+        with anyio.fail_after(10):
+            if (await receive_stream.receive()) != bytes([0x10, 0x01, 0x01]):
+                raise RuntimeError("DFU start failed")
+    except TimeoutError:
+        print("DFU start failed: timeout. Check DFU is enabled on the Over-the-air settings page")
+        await client.disconnect()
+        return
     await client.write_gatt_char(CONTROL_POINT, bytes([0x02, 0x00]), response=False)
     await client.write_gatt_char(PACKET, firmware_dat, response=False)
     await client.write_gatt_char(CONTROL_POINT, bytes([0x02, 0x01]), response=False)

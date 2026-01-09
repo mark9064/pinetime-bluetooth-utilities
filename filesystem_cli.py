@@ -176,7 +176,7 @@ async def main() -> None:
     print("Searching")
     device = await bleak.BleakScanner.find_device_by_name(DEVICE_NAME)
     if device is None:
-        print("No devices found")
+        print("Can't find an InfiniTime device. Disconnect the watch from any device")
         return
     client = bleak.BleakClient(device)
     print("Connecting")
