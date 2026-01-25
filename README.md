@@ -1,5 +1,7 @@
 # PineTime Bluetooth utilities
 
+Scripts for firmware updates and managing resources on the external filesystem/flash in InfiniTime. See the sections below for usage.
+
 Tested on Linux, should support most operating systems. Requires a working Bluetooth adapter to be available ;)
 
 ## Install
